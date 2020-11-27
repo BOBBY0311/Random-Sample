@@ -13,7 +13,8 @@ def getExcel ():
     data=pd.DataFrame(df)
     print (df)
 
-def select_sample():
+# Sets the seed number and number of samples to be selected from the inputs
+def select_sample_criteria():
     global seed
     seed=int(e1.get())
     global samples
@@ -22,9 +23,24 @@ def select_sample():
     #remove line below once compelete this was used to test seed and sample numebrs
     print("Seed:  %s\nSamples: %s" % (e1.get(), e2.get()))
 
+#select the random sample and pick where to save the file
+def select_save_sample ():
+    global df
+    # select samples without replacement using seed provided
+    sample=df.sample(samples,replace=False, random_state=seed)
+    print("Seed: "+str(seed))
+    print("Sample selected: "+str(samples))
+    print(sample)
+    #Choose location to save file
+    export_file_path = filedialog.asksaveasfilename(defaultextension='.xlsx')
+    sample.to_excel (export_file_path, index = False, header=True)
+
+
+
+
 master = tk.Tk()
-tk.Label(master, text="Seed").grid(row=0)
-tk.Label(master, text="Number of Samples").grid(row=1)
+tk.Label(master, text="Seed").grid(row=1)
+tk.Label(master, text="Number of Samples").grid(row=2)
 
 e1 = tk.Entry(master)
 e2 = tk.Entry(master)
@@ -35,13 +51,20 @@ e1.insert(10,random.randint(1000,99999))
 e2.insert(1,0)
 
 tk.Button(master,
-          text='Select Samples',
-          command=master.destroy).grid(row=5,
+          text='Make Sample',
+          command=select_save_sample).grid(row=5,
                                     column=1,
                                     sticky=tk.W,
                                     pady=4)
+
 tk.Button(master,
-          text='Set Sampling Parameters', command=select_sample).grid(row=5,
+          text='Close Program',
+          command=master.destroy).grid(row=5,
+                                    column=2,
+                                    sticky=tk.W,
+                                    pady=4)
+tk.Button(master,
+          text='Set Sampling Parameters', command=select_sample_criteria).grid(row=5,
                                                        column=0,
                                                        sticky=tk.W,
                                                        pady=4)
@@ -51,13 +74,3 @@ tk.Button(text='Import Excel File', command=getExcel).grid(row=0,
                                                        pady=4)
 
 tk.mainloop()
-
-# select samples without replacement using seed provided
-sample=df.sample(samples,replace=False, random_state=seed)
-print("Seed: "+str(seed))
-print("Sample selected: "+str(samples))
-print(sample)
-
-#print samples to excel
-
-sample.to_excel(r'C:\Python test\File Name.xlsx', index = False)
