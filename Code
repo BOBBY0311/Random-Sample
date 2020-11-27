@@ -28,6 +28,9 @@ def select_save_sample ():
     global df
     # select samples without replacement using seed provided
     sample=df.sample(samples,replace=False, random_state=seed)
+    sample.reset_index()
+    sample.insert(0,'Sample Number',range(1,samples+1))
+
     print("Seed: "+str(seed))
     print("Sample selected: "+str(samples))
     print(sample)
