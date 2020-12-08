@@ -13,8 +13,10 @@ def getExcel ():
     data=pd.DataFrame(df)
     print (df)
 
-# Sets the seed number and number of samples to be selected from the inputs
-def select_sample_criteria():
+
+#select the random sample and pick where to save the file
+def select_save_sample ():
+    global df
     global seed
     seed=int(e1.get())
     global samples
@@ -23,9 +25,8 @@ def select_sample_criteria():
     #remove line below once compelete this was used to test seed and sample numebrs
     print("Seed:  %s\nSamples: %s" % (e1.get(), e2.get()))
 
-#select the random sample and pick where to save the file
-def select_save_sample ():
-    global df
+
+
     # select samples without replacement using seed provided
     sample=df.sample(samples,replace=False, random_state=seed)
     sample.reset_index()
@@ -58,20 +59,16 @@ tk.Button(master,
           text='Make Sample',
           command=select_save_sample).grid(row=5,
                                     column=1,
-                                    sticky=tk.W,
+                                    sticky=tk.W, 
                                     pady=4)
 
 tk.Button(master,
           text='Close Program',
           command=master.destroy).grid(row=5,
-                                    column=2, 
+                                    column=2,
                                     sticky=tk.W,
                                     pady=4)
-tk.Button(master,
-          text='Set Sampling Parameters', command=select_sample_criteria).grid(row=5,
-                                                       column=0,
-                                                       sticky=tk.W,
-                                                       pady=4)
+
 tk.Button(text='Import Excel File', command=getExcel).grid(row=0,
                                                        column=1,
                                                        sticky=tk.W,
